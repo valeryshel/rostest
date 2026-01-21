@@ -6,107 +6,40 @@
 get_header(); ?>
 
 <div class="container doctors-container">
-  <h1 class="page-title doctors-title">Наши врачи</h1>
+  <h1 class="page-title doctors-title">
+    <?php echo esc_html__('Наши врачи', 'textdomain'); ?>
+  </h1>
 
-
-
-
-
-
-
-  <!-- Фильтры -->
-  <form method="get" class="doctors-filters">
-    <div class="filter-row">
-      <!-- Специализация -->
-      <div class="filter-group">
-        <label>Специализация:</label>
-        <select name="specialization" class="filter-select">
-          <option value="">Все специализации</option>
-          <?php
-                    $specializations = get_terms(['taxonomy' => 'specialization', 'hide_empty' => true]);
-                    foreach ($specializations as $term) :
-                        $selected = isset($_GET['specialization']) && $_GET['specialization'] == $term->slug ? 'selected' : '';
-                    ?>
-          <option value="<?php echo $term->slug; ?>" <?php echo $selected; ?>>
-            <?php echo $term->name; ?>
-          </option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <!-- Город -->
-      <div class="filter-group">
-        <label>Город:</label>
-        <select name="city" class="filter-select">
-          <option value="">Все города</option>
-          <?php
-                    $cities = get_terms(['taxonomy' => 'city', 'hide_empty' => true]);
-                    foreach ($cities as $term) :
-                        $selected = isset($_GET['city']) && $_GET['city'] == $term->slug ? 'selected' : '';
-                    ?>
-          <option value="<?php echo $term->slug; ?>" <?php echo $selected; ?>>
-            <?php echo $term->name; ?>
-          </option>
-          <?php endforeach; ?>
-        </select>
-      </div>
-
-      <!-- Сортировка -->
-      <div class="filter-group">
-        <label>Сортировка:</label>
-        <select name="sort" class="filter-select">
-          <option value="">По умолчанию</option>
-          <option value="rating_desc" <?php selected(isset($_GET['sort']) && $_GET['sort'] == 'rating_desc'); ?>>
-            По рейтингу (высокий → низкий)
-          </option>
-          <option value="price_asc" <?php selected(isset($_GET['sort']) && $_GET['sort'] == 'price_asc'); ?>>
-            По цене (низкая → высокая)
-          </option>
-          <option value="experience_desc"
-            <?php selected(isset($_GET['sort']) && $_GET['sort'] == 'experience_desc'); ?>>
-            По стажу (большой → маленький)
-          </option>
-        </select>
-      </div>
-
-      <!-- Кнопки -->
-      <div class="filter-actions">
-        <button type="submit" class="filter-button">Применить</button>
-        <a href="<?php echo get_post_type_archive_link('doctors'); ?>" class="filter-reset">
-          Сбросить
-        </a>
-      </div>
-    </div>
-  </form>
-
-
-
-
-
-
-
-
-
-
-
-
+  <?php
+  if (file_exists(get_template_directory() . '/template-parts/doctors-filter.php')) {
+    require get_template_directory() . '/template-parts/doctors-filter.php';
+  }
+  ?>
 
   <div class="doctors-archive">
     <?php if (have_posts()) : ?>
 
     <div class="doctors-grid">
-      <?php while (have_posts()) : the_post(); ?>
+      <?php while (have_posts()) : the_post();
+        $post_id = get_the_ID();
+        $rating = floatval(get_field('rating', $post_id));//float
+        $experience = intval(get_field('experience', $post_id));//integer
+        $price = floatval(get_field('price', $post_id));
+      ?>
 
-      <article class="doctor-card">
+      <article id="post-<?php echo esc_attr($post_id); ?>" <?php post_class('doctor-card'); ?>>
 
         <!-- Миниатюра -->
         <div class="doctor-image-wrapper">
           <?php if (has_post_thumbnail()) : ?>
           <div class="doctor-thumbnail">
-            <a href="<?php the_permalink(); ?>">
-              <?php the_post_thumbnail('medium_large', array(
-                                            'class' => 'doctor-photo'
-                                        )); ?>
+            <a href="<?php echo esc_url(get_permalink()); ?>">
+              <?php
+              the_post_thumbnail('medium_large', array(
+                'class' => 'doctor-photo',
+                'alt' => esc_attr(get_the_title())
+              ));
+              ?>
             </a>
           </div>
           <?php else : ?>
@@ -116,26 +49,24 @@ get_header(); ?>
           <?php endif; ?>
 
           <!-- Рейтинг -->
-          <?php if ($rating = get_field('rating')) : ?>
+          <?php if ($rating > 0) : ?>
           <div class="doctor-rating-badge">
-            <span class="rating-stars">
+            <span class="rating-stars"
+              aria-label="<?php echo esc_attr(sprintf(__('Рейтинг: %s из 5', 'textdomain'), $rating)); ?>">
               <?php
-                                        $full_stars = floor($rating);
-                                        $half_star = ($rating - $full_stars) >= 0.5;
-                                        $empty_stars = 5 - $full_stars - ($half_star ? 1 : 0);
+              $full_stars = floor($rating);
+              $half_star = ($rating - $full_stars) >= 0.5;
+              $empty_stars = 5 - $full_stars - ($half_star ? 1 : 0);
 
-                                        for ($i = 0; $i < $full_stars; $i++) {
-                                            echo '★';
-                                        }
-                                        if ($half_star) {
-                                            echo '⯨';
-                                        }
-                                        for ($i = 0; $i < $empty_stars; $i++) {
-                                            echo '☆';
-                                        }
-                                        ?>
+              // Безопасный вывод звезд
+              echo str_repeat('★', $full_stars);
+              if ($half_star) {
+                echo '⯨';
+              }
+              echo str_repeat('☆', $empty_stars);
+              ?>
             </span>
-            <span class="rating-value"><?php echo $rating; ?></span>
+            <span class="rating-value"><?php echo esc_html(number_format($rating, 1)); ?></span>
           </div>
           <?php endif; ?>
         </div>
@@ -144,50 +75,53 @@ get_header(); ?>
         <div class="doctor-content">
           <!-- Имя -->
           <h2 class="doctor-name">
-            <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            <a href="<?php echo esc_url(get_permalink()); ?>">
+              <?php echo esc_html(get_the_title()); ?>
+            </a>
           </h2>
 
           <!-- Специализация -->
           <?php
-                            $specializations = get_the_terms(get_the_ID(), 'specialization');
-                            if ($specializations && !is_wp_error($specializations)) :
-                            ?>
+          $specializations = get_the_terms($post_id, 'specialization');
+          if ($specializations && !is_wp_error($specializations)) :
+          ?>
           <div class="doctor-specialization">
             <?php
-                                    $specs = array_slice($specializations, 0, 2);
-                                    foreach ($specs as $spec) {
-                                        echo '<span class="specialization-tag">' . esc_html($spec->name) . '</span>';
-                                    }
-                                    ?>
+            $specs = array_slice($specializations, 0, 2);
+            foreach ($specs as $spec) {
+              echo '<span class="specialization-tag">' . esc_html($spec->name) . '</span>';
+            }
+            ?>
           </div>
           <?php endif; ?>
 
           <!-- Доп. информация -->
           <div class="doctor-details">
-            <?php if ($experience = get_field('experience')) : ?>
+            <?php if ($experience > 0) : ?>
             <div class="doctor-detail-item">
               <span class="detail-icon">📅</span>
-              <span class="detail-label">Стаж:</span>
-              <span class="detail-value"><?php echo esc_html($experience); ?> лет</span>
+              <span class="detail-label"><?php echo esc_html__('Стаж:', 'textdomain'); ?></span>
+              <span class="detail-value"><?php echo esc_html($experience); ?>
+                <?php echo esc_html(_n('год', 'года', $experience, 'textdomain')); ?></span>
             </div>
             <?php endif; ?>
 
-            <?php if ($price = get_field('price')) : ?>
+            <?php if ($price > 0) : ?>
             <div class="doctor-detail-item">
               <span class="detail-icon">💰</span>
-              <span class="detail-label">Прием от:</span>
-              <span class="detail-value"><?php echo number_format($price, 0, ',', ' '); ?> ₽</span>
+              <span class="detail-label"><?php echo esc_html__('Прием от:', 'textdomain'); ?></span>
+              <span class="detail-value"><?php echo esc_html(number_format($price, 0, ',', ' ')); ?> ₽</span>
             </div>
             <?php endif; ?>
 
             <!-- Город -->
             <?php
-                                $cities = get_the_terms(get_the_ID(), 'city');
-                                if ($cities && !is_wp_error($cities)) :
-                                ?>
+            $cities = get_the_terms($post_id, 'city');
+            if ($cities && !is_wp_error($cities)) :
+            ?>
             <div class="doctor-detail-item">
               <span class="detail-icon">📍</span>
-              <span class="detail-label">Город:</span>
+              <span class="detail-label"><?php echo esc_html__('Город:', 'textdomain'); ?></span>
               <span class="detail-value"><?php echo esc_html($cities[0]->name); ?></span>
             </div>
             <?php endif; ?>
@@ -196,14 +130,14 @@ get_header(); ?>
           <!-- Краткое описание -->
           <?php if (has_excerpt()) : ?>
           <div class="doctor-excerpt">
-            <?php echo wp_trim_words(get_the_excerpt(), 15, '...'); ?>
+            <?php echo wp_kses_post(wp_trim_words(get_the_excerpt(), 15, '...')); ?>
           </div>
           <?php endif; ?>
 
           <!-- Кнопка -->
-          <a href="<?php the_permalink(); ?>" class="doctor-button">
-            <span>Записаться на прием</span>
-            <span class="button-arrow">→</span>
+          <a href="<?php echo esc_url(get_permalink()); ?>" class="doctor-button">
+            <span><?php echo esc_html__('Записаться на прием', 'textdomain'); ?></span>
+            <span class="button-arrow" aria-hidden="true">→</span>
           </a>
         </div>
 
@@ -212,21 +146,18 @@ get_header(); ?>
       <?php endwhile; ?>
     </div>
 
-    <!-- Пагинация -->
-    <div class="doctors-pagination">
-      <?php
-                the_posts_pagination(array(
-                    'mid_size'  => 2,
-                    'prev_text' => '← Назад',
-                    'next_text' => 'Вперед →',
-                ));
-                ?>
-    </div>
+
+
+    <?php
+  if (file_exists(get_template_directory() . '/template-parts/doctors-pagination.php')) {
+    require get_template_directory() . '/template-parts/doctors-pagination.php';
+  }
+  ?>
 
     <?php else : ?>
     <div class="no-doctors">
       <p class="no-doctors-icon">👨‍⚕️</p>
-      <p>Врачей пока нет в базе</p>
+      <p><?php echo esc_html__('Врачей пока нет в базе', 'textdomain'); ?></p>
     </div>
     <?php endif; ?>
   </div>
