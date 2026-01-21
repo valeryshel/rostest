@@ -1,0 +1,403 @@
+/* Контейнер */
+.doctors-container {
+	padding: 40px 20px;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+.doctors-title {
+	text-align: center;
+	color: #6a11cb;
+	margin-bottom: 50px;
+	font-size: 2.5em;
+	text-shadow: 2px 2px 4px rgba(106, 17, 203, 0.1);
+}
+
+/* Сетка */
+.doctors-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+	gap: 30px;
+	margin-bottom: 60px;
+}
+
+/* Карточка */
+.doctor-card {
+	background: linear-gradient(145deg, #ffffff, #f9f0ff);
+	border-radius: 20px;
+	padding: 25px;
+	box-shadow: 0 10px 30px rgba(157, 78, 221, 0.1);
+	transition: all 0.3s ease;
+	border: 1px solid #e6d4f7;
+	position: relative;
+	overflow: hidden;
+}
+
+.doctor-card:hover {
+	transform: translateY(-10px);
+	box-shadow: 0 15px 40px rgba(157, 78, 221, 0.2);
+}
+
+.doctor-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 5px;
+	background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1);
+}
+
+/* Изображение */
+.doctor-image-wrapper {
+	position: relative;
+	margin-bottom: 20px;
+	border-radius: 15px;
+	overflow: hidden;
+}
+
+.doctor-photo {
+	width: 100%;
+	height: 250px;
+	object-fit: cover;
+	border-radius: 15px;
+	transition: transform 0.5s ease;
+}
+
+.doctor-card:hover .doctor-photo {
+	transform: scale(1.05);
+}
+
+.no-photo {
+	background: linear-gradient(135deg, #fad0c4, #ffd1ff);
+	height: 250px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 15px;
+}
+
+.placeholder-icon {
+	font-size: 80px;
+	opacity: 0.7;
+}
+
+/* Рейтинг */
+.doctor-rating-badge {
+	position: absolute;
+	bottom: 15px;
+	right: 15px;
+	background: rgba(255, 255, 255, 0.95);
+	padding: 8px 15px;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	backdrop-filter: blur(10px);
+	border: 2px solid #ffd1ff;
+}
+
+.rating-stars {
+	color: #ff9a9e;
+	font-size: 1.1em;
+}
+
+.rating-value {
+	font-weight: bold;
+	color: #6a11cb;
+	font-size: 1.1em;
+}
+
+/* Контент */
+.doctor-content {
+	padding: 0 10px;
+}
+
+.doctor-name {
+	margin: 0 0 15px 0;
+	font-size: 1.4em;
+}
+
+.doctor-name a {
+	color: #6a11cb;
+	text-decoration: none;
+	transition: color 0.3s;
+}
+
+.doctor-name a:hover {
+	color: #ff9a9e;
+	text-decoration: underline;
+}
+
+/* Специализации */
+.doctor-specialization {
+	margin-bottom: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.specialization-tag {
+	background: linear-gradient(135deg, #ffd1ff, #fad0c4);
+	color: #6a11cb;
+	padding: 6px 15px;
+	border-radius: 20px;
+	font-size: 0.9em;
+	font-weight: 500;
+	border: 1px solid #e6d4f7;
+	transition: all 0.3s;
+}
+
+.specialization-tag:hover {
+	transform: scale(1.05);
+	background: linear-gradient(135deg, #fad0c4, #ffd1ff);
+}
+
+/* Детали */
+.doctor-details {
+	background: #f9f0ff;
+	border-radius: 15px;
+	padding: 20px;
+	margin-bottom: 20px;
+	border: 1px solid #e6d4f7;
+}
+
+.doctor-detail-item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 12px;
+	padding-bottom: 12px;
+	border-bottom: 1px dashed #e6d4f7;
+}
+
+.doctor-detail-item:last-child {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	border-bottom: none;
+}
+
+.detail-icon {
+	font-size: 1.2em;
+	min-width: 30px;
+	text-align: center;
+}
+
+.detail-label {
+	color: #8a2be2;
+	font-weight: 500;
+	min-width: 80px;
+}
+
+.detail-value {
+	font-weight: 600;
+	color: #6a11cb;
+}
+
+/* Отрывок */
+.doctor-excerpt {
+	color: #666;
+	line-height: 1.6;
+	margin-bottom: 25px;
+	font-size: 0.95em;
+	padding: 15px;
+	background: rgba(255, 255, 255, 0.7);
+	border-radius: 10px;
+	border-left: 4px solid #ff9a9e;
+}
+
+/* Кнопка */
+.doctor-button {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: linear-gradient(90deg, #6a11cb, #2575fc);
+	color: white;
+	text-decoration: none;
+	padding: 15px 25px;
+	border-radius: 12px;
+	font-weight: 600;
+	transition: all 0.3s ease;
+	border: none;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.doctor-button:hover {
+	background: linear-gradient(90deg, #2575fc, #6a11cb);
+	transform: translateY(-2px);
+	box-shadow: 0 5px 20px rgba(106, 17, 203, 0.3);
+}
+
+.button-arrow {
+	font-size: 1.2em;
+	transition: transform 0.3s;
+}
+
+.doctor-button:hover .button-arrow {
+	transform: translateX(5px);
+}
+
+/* Пагинация */
+.doctors-pagination {
+	padding-top: 40px;
+	border-top: 2px solid #f0e6ff;
+}
+
+.doctors-pagination .page-numbers {
+	padding: 10px 20px;
+	margin: 0 5px;
+	border-radius: 10px;
+	background: #f9f0ff;
+	color: #6a11cb;
+	text-decoration: none;
+	border: 2px solid #e6d4f7;
+	transition: all 0.3s;
+}
+
+.doctors-pagination .page-numbers.current {
+	background: linear-gradient(135deg, #6a11cb, #2575fc);
+	color: white;
+	border-color: #6a11cb;
+}
+
+.doctors-pagination .page-numbers:hover {
+	background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+	border-color: #ff9a9e;
+	color: white;
+	transform: translateY(-2px);
+}
+
+/* Нет врачей */
+.no-doctors {
+	text-align: center;
+	padding: 80px 20px;
+	background: linear-gradient(135deg, #f9f0ff, #ffffff);
+	border-radius: 20px;
+	border: 2px dashed #e6d4f7;
+}
+
+.no-doctors-icon {
+	font-size: 60px;
+	margin-bottom: 20px;
+}
+
+.no-doctors p {
+	color: #6a11cb;
+	font-size: 1.2em;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+	.doctors-grid {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+
+	.doctors-title {
+		font-size: 2em;
+	}
+
+	.doctor-detail-item {
+		flex-wrap: wrap;
+	}
+}
+
+
+
+/* Фильтры */
+.doctors-filters {
+	background: linear-gradient(135deg, #f9f0ff, #ffffff);
+	padding: 25px;
+	border-radius: 15px;
+	margin-bottom: 40px;
+	border: 2px solid #e6d4f7;
+}
+
+.filter-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-items: flex-end;
+}
+
+.filter-group {
+	flex: 1;
+	min-width: 200px;
+}
+
+.filter-group label {
+	display: block;
+	margin-bottom: 8px;
+	color: #6a11cb;
+	font-weight: 600;
+	font-size: 0.9em;
+}
+
+.filter-select {
+	width: 100%;
+	padding: 12px 15px;
+	border: 2px solid #e6d4f7;
+	border-radius: 10px;
+	background: white;
+	color: #333;
+	font-size: 1em;
+	transition: all 0.3s;
+}
+
+.filter-select:focus {
+	outline: none;
+	border-color: #6a11cb;
+	box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+}
+
+.filter-actions {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+}
+
+.filter-button {
+	background: linear-gradient(90deg, #6a11cb, #2575fc);
+	color: white;
+	border: none;
+	padding: 12px 25px;
+	border-radius: 10px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.filter-button:hover {
+	background: linear-gradient(90deg, #2575fc, #6a11cb);
+	transform: translateY(-2px);
+}
+
+.filter-reset {
+	color: #6a11cb;
+	text-decoration: none;
+	padding: 12px 20px;
+	border-radius: 10px;
+	border: 2px solid #e6d4f7;
+	transition: all 0.3s;
+}
+
+.filter-reset:hover {
+	background: #f9f0ff;
+	border-color: #6a11cb;
+}
+
+@media (max-width: 768px) {
+	.filter-row {
+		flex-direction: column;
+	}
+
+	.filter-group {
+		width: 100%;
+	}
+
+	.filter-actions {
+		justify-content: center;
+		width: 100%;
+	}
+}
