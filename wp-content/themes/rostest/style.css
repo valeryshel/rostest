@@ -401,3 +401,134 @@
 		width: 100%;
 	}
 }
+
+/* Стили для страницы врача */
+
+
+/* Дополнительные стили для single-doctors */
+.doctor-main-content {
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+}
+
+.doctor-excerpt-single {
+	background: linear-gradient(135deg, #f9f0ff, #ffffff);
+	padding: 25px;
+	border-radius: 20px;
+	border-left: 5px solid #ff9a9e;
+}
+
+.excerpt-title {
+	color: #6a11cb;
+	margin: 0 0 15px 0;
+	font-size: 1.4em;
+}
+
+.excerpt-text {
+	color: #555;
+	line-height: 1.7;
+	font-size: 1.1em;
+	margin: 0;
+}
+
+.doctor-content-single {
+	background: white;
+	padding: 30px;
+	border-radius: 20px;
+	border: 2px solid #e6d4f7;
+}
+
+.content-title {
+	color: #6a11cb;
+	margin: 0 0 20px 0;
+	font-size: 1.4em;
+	padding-bottom: 15px;
+	border-bottom: 2px solid #ffd1ff;
+}
+
+.content-text {
+	line-height: 1.8;
+	color: #444;
+}
+
+.content-text p {
+	margin-bottom: 20px;
+}
+
+.content-text ul,
+.content-text ol {
+	margin-left: 20px;
+	margin-bottom: 20px;
+}
+
+.content-text li {
+	margin-bottom: 10px;
+	padding-left: 10px;
+}
+
+.doctor-back {
+	margin-top: 30px;
+	padding-top: 30px;
+	border-top: 2px dashed #e6d4f7;
+}
+
+.back-link {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	color: #6a11cb;
+	text-decoration: none;
+	font-weight: 600;
+	padding: 12px 25px;
+	background: #f9f0ff;
+	border-radius: 10px;
+	border: 2px solid #e6d4f7;
+	transition: all 0.3s;
+}
+
+.back-link:hover {
+	background: #ffd1ff;
+	border-color: #6a11cb;
+	transform: translateX(-5px);
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+	.doctor-content-wrapper {
+		grid-template-columns: 1fr;
+		gap: 30px;
+	}
+
+	.doctor-sidebar {
+		order: 1;
+	}
+
+	.doctor-main-content {
+		order: 2;
+	}
+}
+
+@media (max-width: 768px) {
+	.doctor-single {
+		padding: 25px;
+	}
+
+	.doctor-title {
+		font-size: 2em;
+	}
+
+	.doctor-excerpt-single,
+	.doctor-content-single {
+		padding: 20px;
+	}
+
+	.meta-item {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.meta-icon {
+		align-self: flex-start;
+	}
+}
